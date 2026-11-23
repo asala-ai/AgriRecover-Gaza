@@ -1,7 +1,8 @@
+
 streamlit
 tensorflow
 numpy
 pandas
-scikit-learn
 plotly
 joblib
+scikit-learn
