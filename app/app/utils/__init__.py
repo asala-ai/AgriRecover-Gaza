@@ -1,1 +1,3 @@
-
+"""
+AgriRecover Gaza - Utility Modules
+"""
