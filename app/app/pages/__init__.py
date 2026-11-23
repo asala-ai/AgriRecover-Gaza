@@ -1,0 +1,4 @@
+
+"""
+AgriRecover Gaza - Application Pages
+"""
