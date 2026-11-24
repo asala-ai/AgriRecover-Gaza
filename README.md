@@ -111,9 +111,9 @@ The Streamlit application provides six main sections:
 
 8. Project Structure
 
+The repository is organized into the following directories and files:
+
 AgriRecover-Gaza/
-│
-├── app.py
 │
 ├── app/
 │   └── app/
@@ -121,13 +121,14 @@ AgriRecover-Gaza/
 │       ├── pages/
 │       └── utils/
 │
+├── assets/
+│   └── README.md
+│
 ├── data/
 │   ├── AgriRecover_Final_2018_2026(1).csv
 │   └── README.md
 │
-├── model/
-│   ├── AgriRecover_ANN_Model.keras
-│   ├── AgriRecover_Scaler.pkl
+├── docs/
 │   └── README.md
 │
 ├── gee/
@@ -135,30 +136,37 @@ AgriRecover-Gaza/
 │   ├── Sample_Coordinates.js
 │   └── README.md
 │
-├── assets/
+├── model/
+│   ├── AgriRecover_ANN_Model.keras
+│   ├── AgriRecover_Scaler.pkl
 │   └── README.md
 │
-├── docs/
-│   └── README.md
-│
-├── requirements.txt
 ├── .gitignore
+├── app.py
+├── requirements.txt
 └── README.md
 
 9. Run Locally
 
-Clone the repository:
+Follow these steps to run AgriRecover Gaza on your local machine.
+
+Step 1: Clone the repository
 
 git clone https://github.com/asala-ai/AgriRecover-Gaza.git
+
+Step 2: Navigate to the project directory
+
 cd AgriRecover-Gaza
 
-Install the required packages:
+Step 3: Install the required dependencies
 
 pip install -r requirements.txt
 
-Run the application:
+Step 4: Run the Streamlit application
 
 streamlit run app.py
+
+The application will open in your default web browser.
 
 10. Scope and Limitations
 
