@@ -1,8 +1,10 @@
 
+
 streamlit
-tensorflow
+tensorflow==2.21.0
 numpy
 pandas
 plotly
 joblib
-scikit-learn
+scikit-learn==1.6.1
+
