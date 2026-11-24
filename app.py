@@ -586,10 +586,7 @@ elif page == "AI Prediction":
         dist_fig.update_layout(template="plotly_white", height=340)
         st.plotly_chart(dist_fig, use_container_width=True)
 
-    st.caption(
-        "Model inference uses the saved AgriRecover_ANN_Model.keras and "
-        "AgriRecover_Scaler.pkl files. The model is not retrained in this app."
-    )
+    
 
 
 # ---------------------------------------------------------------------
