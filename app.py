@@ -753,13 +753,7 @@ elif page == "Model Performance":
         "is needed before using the model for operational decisions."
     )
 
-    st.divider()
-
-    st.caption(
-        "AgriRecover Gaza • Deep Learning for Agricultural "
-        "Vegetation Prediction • Evaluation metrics are based "
-        "on the completed Google Colab experiment."
-    )
+    
 
                     
 
