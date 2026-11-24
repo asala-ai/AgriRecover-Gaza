@@ -8,7 +8,7 @@ Deep Learning for Agricultural Vegetation Monitoring and Prediction
 
 ---
 
-1. Project Overview
+1.  Project Overview
 
 AgriRecover Gaza is an academic deep learning project that uses Sentinel-2 satellite data and Artificial Neural Networks (ANN) to monitor agricultural vegetation and predict future NDVI values in the Gaza Strip, Palestine.
 
@@ -16,7 +16,7 @@ The project analyzes historical agricultural vegetation indicators extracted fro
 
 An interactive Streamlit dashboard provides tools for data analysis, visualization, prediction, and model evaluation.
 
-2. Project Objectives
+2.  Project Objectives
 
 - Monitor agricultural vegetation using satellite data.
 - Analyze historical vegetation changes.
@@ -24,7 +24,7 @@ An interactive Streamlit dashboard provides tools for data analysis, visualizati
 - Develop a deep learning model for next-month NDVI prediction.
 - Provide an interactive platform for exploring and evaluating results.
 
-3. Dataset Overview
+3.  Dataset Overview
 
 Property| Description
 Study Area| Gaza Strip, Palestine
