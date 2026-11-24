@@ -595,154 +595,176 @@ elif page == "AI Prediction":
 # ---------------------------------------------------------------------
 # Model Performance
 # ---------------------------------------------------------------------
+
 elif page == "Model Performance":
     page_header(
         "Model Performance",
-        "Reported evaluation results from the completed model experiment.",
+        "Evaluation results of the ANN model compared with the persistence baseline."
     )
 
     st.info(
-        "The metrics below are copied from the model evaluation output in the "
-        "project notebook. They are not recalculated when this page opens."
+        "The following metrics are taken from the final Google Colab "
+        "evaluation results. They are reported values and are not "
+        "recalculated when this page opens."
     )
-    m1, m2, m3 = st.columns(3)
-    with m1:
-        metric_card("MAE", "0.0952", "Mean Absolute Error")
-    with m2:
-        metric_card("RMSE", "0.1327", "Root Mean Squared Error")
-    with m3:
-        metric_card("R²", "0.5675", "Coefficient of determination")
 
-    st.subheader("ANN architecture")
+    # Final ANN Results
+    st.subheader("ANN Model Results")
+
+    m1, m2, m3 = st.columns(3)
+
+    with m1:
+        metric_card("MAE", "0.0859", "Mean Absolute Error")
+
+    with m2:
+        metric_card("RMSE", "0.1283", "Root Mean Squared Error")
+
+    with m3:
+        metric_card("R²", "0.5850", "Coefficient of determination")
+
+    # Baseline Comparison
+    st.subheader("ANN vs Baseline Comparison")
+
+    comparison = pd.DataFrame({
+        "Metric": ["MAE", "RMSE", "R²"],
+        "ANN Model": [0.0859, 0.1283, 0.5850],
+        "Baseline": [0.0874, 0.1452, 0.4683],
+    })
+
+    st.dataframe(
+        comparison,
+        hide_index=True,
+        use_container_width=True
+    )
+
+    # Performance Improvement
+    mae_improvement = ((0.0874 - 0.0859) / 0.0874) * 100
+    rmse_improvement = ((0.1452 - 0.1283) / 0.1452) * 100
+    r2_improvement = 0.5850 - 0.4683
+
+    st.subheader("Performance Improvement")
+
+    c1, c2, c3 = st.columns(3)
+
+    with c1:
+        metric_card(
+            "MAE Reduction",
+            f"{mae_improvement:.2f}%",
+            "Lower prediction error"
+        )
+
+    with c2:
+        metric_card(
+            "RMSE Reduction",
+            f"{rmse_improvement:.2f}%",
+            "Lower large-error impact"
+        )
+
+    with c3:
+        metric_card(
+            "R² Improvement",
+            f"+{r2_improvement:.4f}",
+            "Absolute increase"
+        )
+
+    st.success(
+        "The ANN model outperformed the persistence baseline "
+        "across all three evaluation metrics."
+    )
+
+    # ANN Architecture
+    st.subheader("ANN Architecture")
+
     arch = st.columns(4)
+
     architecture = [
         ("Input", "6 features", "NDVI, EVI, NDMI, SAVI, BSI, NBR"),
-        ("Hidden layer 1", "64 neurons", "ReLU activation"),
-        ("Hidden layer 2", "32 neurons", "ReLU activation"),
+        ("Hidden Layer 1", "64 neurons", "ReLU activation"),
+        ("Hidden Layer 2", "32 neurons", "ReLU activation"),
         ("Output", "1 value", "Next-month NDVI"),
     ]
+
     for col, (title, value, detail) in zip(arch, architecture):
         with col:
             st.markdown(
                 f"""
-                <div class="section-card" style="min-height:135px;text-align:center">
-                  <div class="small-note">{title}</div>
-                  <h3 style="margin:.4rem 0">{value}</h3>
-                  <div class="small-note">{detail}</div>
+                <div class="section-card"
+                     style="min-height:135px;text-align:center">
+                    <div class="small-note">{title}</div>
+                    <h3 style="margin:.4rem 0">{value}</h3>
+                    <div class="small-note">{detail}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
 
-    st.subheader("Training configuration")
-    config = pd.DataFrame(
-        {
-            "Setting": [
-                "Optimizer",
-                "Loss function",
-                "Epochs",
-                "Batch size",
-                "Validation split",
-                "Input scaling",
-            ],
-            "Value": [
-                "Adam",
-                "Mean Squared Error (MSE)",
-                "30",
-                "32",
-                "20% of training data",
-                "StandardScaler",
-            ],
-        }
-    )
-    st.dataframe(config, hide_index=True, use_container_width=True)
+    # Training Configuration
+    st.subheader("Training Configuration")
 
-    st.subheader("How to interpret the metrics")
+    config = pd.DataFrame({
+        "Setting": [
+            "Optimizer",
+            "Loss Function",
+            "Epochs",
+            "Batch Size",
+            "Validation Split",
+            "Input Scaling",
+        ],
+        "Value": [
+            "Adam",
+            "Mean Squared Error (MSE)",
+            "30",
+            "32",
+            "20% of training data",
+            "StandardScaler",
+        ],
+    })
+
+    st.dataframe(
+        config,
+        hide_index=True,
+        use_container_width=True
+    )
+
+    # Interpretation
+    st.subheader("How to Interpret the Results")
+
     st.markdown(
         """
-        - **MAE** measures the average absolute difference between actual and predicted NDVI.
-        - **RMSE** gives greater weight to larger prediction errors.
-        - **R²** describes the proportion of target variance explained by the model on the evaluation set.
+        - **MAE:** Measures the average absolute difference
+          between actual and predicted NDVI.
+        - **RMSE:** Gives greater weight to larger prediction errors.
+        - **R²:** Measures how much of the target variance is
+          explained by the model on the evaluation dataset.
+
+        ### Model Evaluation Summary
+
+        The ANN achieved an MAE of 0.0859 and an RMSE of 0.1283,
+        with an R² score of 0.5850.
+
+        Compared with the persistence baseline, the ANN reduced
+        MAE by approximately 1.72% and RMSE by approximately 11.64%.
+
+        Its R² score also increased from 0.4683 to 0.5850.
         """
     )
+
     st.warning(
-        "The R² value of 0.5675 indicates moderate explanatory performance, "
-        "not a classification accuracy percentage. Training/validation loss "
-        "curves and the saved test predictions are not included in the current "
-        "GitHub repository, so this page does not fabricate those plots."
+        "The R² score represents explanatory performance, "
+        "not classification accuracy. These results indicate "
+        "improvement over the baseline, but further validation "
+        "is needed before using the model for operational decisions."
     )
 
-
-# ---------------------------------------------------------------------
-# Data Quality
-# ---------------------------------------------------------------------
-elif page == "Data Quality":
-    page_header(
-        "Data Quality",
-        "Inspect completeness, duplicate records, monthly coverage, and values requiring review.",
-    )
-
-    missing_total = int(df[["month", "sample_id"] + FEATURES].isna().sum().sum())
-    duplicate_total = int(df.duplicated(subset=["month", "sample_id"]).sum())
-    evi_high = int((df["EVI"] > 1).sum())
-    expected_records = sample_count * month_count
-    absent_pairs = max(expected_records - record_count, 0)
-
-    q1, q2, q3, q4 = st.columns(4)
-    with q1:
-        metric_card("Missing values", f"{missing_total:,}")
-    with q2:
-        metric_card("Duplicate sample-month pairs", f"{duplicate_total:,}")
-    with q3:
-        metric_card("EVI values > 1", f"{evi_high:,}")
-    with q4:
-        metric_card("Unobserved sample-month pairs*", f"{absent_pairs:,}")
+    st.divider()
 
     st.caption(
-        "*Calculated as sample count × observed month count minus the number "
-        "of rows. This is a coverage gap count, not a count of null cells."
+        "AgriRecover Gaza • Deep Learning for Agricultural "
+        "Vegetation Prediction • Evaluation metrics are based "
+        "on the completed Google Colab experiment."
     )
 
-    st.subheader("Records per month")
-    monthly_counts = df.groupby("month", as_index=False).size()
-    count_fig = px.bar(
-        monthly_counts,
-        x="month",
-        y="size",
-        labels={"month": "Month", "size": "Records"},
-    )
-    count_fig.update_traces(marker_color=COLORS["sage"])
-    count_fig.update_layout(template="plotly_white", height=340)
-    st.plotly_chart(count_fig, use_container_width=True)
-
-    st.subheader("Values flagged for review")
-    flagged = df[df["EVI"] > 1][["month", "sample_id", "EVI"]].sort_values(
-        ["month", "sample_id"]
-    )
-    if flagged.empty:
-        st.success("No EVI values above 1 were found in the current dataset.")
-    else:
-        st.warning(
-            f"{len(flagged)} EVI values are greater than 1. They are displayed "
-            "for review and are not silently deleted or modified by this app."
-        )
-        st.dataframe(flagged, use_container_width=True, hide_index=True)
-
-    st.subheader("Geographic data availability")
-    has_coordinates = {"latitude", "longitude"}.issubset(
-        {c.lower() for c in df.columns}
-    )
-    if has_coordinates:
-        st.success("Latitude and longitude columns are available in the dataset.")
-    else:
-        st.info(
-            "The current final CSV contains month, sample_id, and six spectral "
-            "indices, but no latitude/longitude columns. A geographic map of "
-            "the 500 sample points will be added after the original sample "
-            "coordinates are exported from Google Earth Engine and matched "
-            "to sample_id. No random locations are generated."
-        )
-
+                    
 
 # ---------------------------------------------------------------------
 # About Project
