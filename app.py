@@ -60,7 +60,41 @@ st.markdown(
         text-transform: uppercase; font-weight: 700; }
     .hero-title { color: #294638; font-size: 2rem; font-weight: 700; margin: .25rem 0; }
     .hero-sub { color: #607168; font-size: 1rem; }
-    .small-note { color: #68776F; font-size: .88rem; }
+    /* Improved text readability */
+.small-note {
+    color: #52645A !important;
+    font-size: .9rem;
+    line-height: 1.6;
+}
+
+.hero-kicker {
+    color: #52645A !important;
+}
+
+.hero-sub {
+    color: #52645A !important;
+    line-height: 1.7;
+}
+
+.stCaption,
+[data-testid="stCaptionContainer"] {
+    color: #52645A !important;
+}
+
+.stMarkdown p {
+    color: #44564B;
+}
+
+.stSelectbox label,
+.stRadio label {
+    color: #44564B !important;
+    font-weight: 600;
+}
+
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] .stCaption {
+    color: #52645A !important;
+}
     div[data-testid="stMetric"] {
         background: #FFFFFF; border: 1px solid #E0E7E0;
         padding: 12px 14px; border-radius: 14px;
