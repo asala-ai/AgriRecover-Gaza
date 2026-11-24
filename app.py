@@ -758,6 +758,162 @@ elif page == "Model Performance":
                     
 
 # ---------------------------------------------------------------------
+# Data Quality
+# ---------------------------------------------------------------------
+elif page == "Data Quality":
+    page_header(
+        "Data Quality",
+        "Inspect dataset completeness, duplicate records, monthly coverage, and potential values requiring review.",
+    )
+
+    required_columns = ["month", "sample_id"] + FEATURES
+    missing_columns = [column for column in required_columns if column not in df.columns]
+
+    if missing_columns:
+        st.error(f"The dataset is missing required columns: {', '.join(missing_columns)}")
+        st.stop()
+
+    # Basic quality checks on the dataset loaded by the main application.
+    missing_values = int(df[required_columns].isna().sum().sum())
+    duplicate_records = int(df.duplicated(subset=["month", "sample_id"]).sum())
+    evi_above_one = int((df["EVI"] > 1).sum())
+
+    sample_ids = pd.Index(df["sample_id"].dropna().unique())
+    observed_months = pd.Index(df["month"].dropna().unique())
+    expected_records = len(sample_ids) * len(observed_months)
+    actual_pairs = pd.MultiIndex.from_frame(df[["sample_id", "month"]].drop_duplicates())
+    expected_pairs = pd.MultiIndex.from_product(
+        [sample_ids, observed_months], names=["sample_id", "month"]
+    )
+    missing_combinations = expected_pairs.difference(actual_pairs)
+    coverage_gaps = len(missing_combinations)
+    coverage_rate = (
+        (len(expected_pairs) - coverage_gaps) / len(expected_pairs) * 100
+        if len(expected_pairs) else 0.0
+    )
+
+    st.subheader("Dataset Quality Overview")
+    q1, q2, q3, q4 = st.columns(4)
+    with q1:
+        metric_card("Missing Values", f"{missing_values:,}", "Across month, sample ID, and the six spectral features")
+    with q2:
+        metric_card("Duplicate Records", f"{duplicate_records:,}", "Repeated month and sample ID pairs")
+    with q3:
+        metric_card("EVI Values > 1", f"{evi_above_one:,}", "Flagged for review; not automatically removed")
+    with q4:
+        metric_card("Coverage Gaps", f"{coverage_gaps:,}", "Missing sample-month combinations")
+
+    st.caption(
+        f"The dataset contains {record_count:,} records across {sample_count:,} samples "
+        f"and {month_count:,} observed months. Expected combinations: {expected_records:,}. "
+        f"Observed coverage: {coverage_rate:.2f}%."
+    )
+
+    st.divider()
+    st.subheader("Monthly Data Coverage")
+    monthly_counts = (
+        df.groupby("month", as_index=False)
+        .size()
+        .rename(columns={"size": "Records"})
+        .sort_values("month")
+    )
+    monthly_fig = px.bar(
+        monthly_counts,
+        x="month",
+        y="Records",
+        labels={"month": "Month", "Records": "Number of Records"},
+        title="Number of Records per Month",
+    )
+    monthly_fig.update_traces(marker_color=COLORS["sage"])
+    monthly_fig.update_layout(
+        template="plotly_white",
+        height=360,
+        margin=dict(l=10, r=10, t=45, b=10),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="#FFFFFF",
+    )
+    st.plotly_chart(monthly_fig, use_container_width=True)
+
+    st.divider()
+    st.subheader("Missing Values by Feature")
+    missing_by_column = (
+        df[required_columns].isna().sum().rename_axis("Feature")
+        .reset_index(name="Missing Count")
+    )
+    missing_fig = px.bar(
+        missing_by_column,
+        x="Feature",
+        y="Missing Count",
+        title="Missing Values Distribution",
+        color_discrete_sequence=[COLORS["blue"]],
+    )
+    missing_fig.update_layout(
+        template="plotly_white",
+        height=320,
+        margin=dict(l=10, r=10, t=45, b=10),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="#FFFFFF",
+    )
+    st.plotly_chart(missing_fig, use_container_width=True)
+
+    st.divider()
+    st.subheader("Potential Values Requiring Review")
+    flagged_evi = df.loc[df["EVI"] > 1, ["month", "sample_id", "EVI"]].sort_values(
+        ["month", "sample_id"]
+    )
+    if flagged_evi.empty:
+        st.success("No EVI values above 1 were found in the current dataset.")
+    else:
+        st.warning(
+            f"{len(flagged_evi):,} EVI records are above 1. "
+            "They are flagged for investigation and have not been changed or removed."
+        )
+        st.dataframe(flagged_evi, use_container_width=True, hide_index=True)
+
+    if coverage_gaps:
+        with st.expander("Inspect missing sample-month combinations"):
+            gaps_df = missing_combinations.to_frame(index=False).sort_values(
+                ["month", "sample_id"]
+            )
+            st.dataframe(gaps_df, use_container_width=True, hide_index=True)
+
+    st.divider()
+    st.subheader("Geographic Data Availability")
+    coordinate_columns = {column.lower() for column in df.columns}
+    if {"latitude", "longitude"}.issubset(coordinate_columns):
+        st.success("Latitude and longitude columns are available in this dataset.")
+    else:
+        st.info(
+            "Latitude and longitude are not included in the current CSV. "
+            "Geographic mapping requires the original sample coordinates exported from Google Earth Engine."
+        )
+
+    st.divider()
+    st.subheader("Dataset Summary")
+    quality_summary = pd.DataFrame(
+        {
+            "Metric": [
+                "Total Records",
+                "Unique Samples",
+                "Observed Months",
+                "Spectral Indicators",
+                "Expected Sample-Month Combinations",
+                "Observed Coverage",
+            ],
+            "Value": [
+                f"{record_count:,}",
+                f"{sample_count:,}",
+                f"{month_count:,}",
+                str(len(FEATURES)),
+                f"{expected_records:,}",
+                f"{coverage_rate:.2f}%",
+            ],
+        }
+    )
+    st.dataframe(quality_summary, use_container_width=True, hide_index=True)
+
+
+# ---------------------------------------------------------------------
 # About Project
 # ---------------------------------------------------------------------
 elif page == "About Project":
