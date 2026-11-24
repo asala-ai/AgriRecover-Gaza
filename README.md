@@ -1,152 +1,165 @@
-🌱 AgriRecover Gaza
 
-Deep Learning for Agricultural Vegetation Monitoring and Prediction
+# 🌱 AgriRecover Gaza
 
-🚀 Live Interactive Application
+**Deep Learning for Agricultural Vegetation Monitoring and Prediction**
 
-"Open AgriRecover Gaza Dashboard" (https://agrirecover-gaza-dgyt2m7hxcwnje35rbaagj.streamlit.app/)
+AgriRecover Gaza is an academic deep learning project that uses Sentinel-2 satellite data and an Artificial Neural Network (ANN) to monitor agricultural vegetation and estimate future vegetation conditions in the Gaza Strip, Palestine.
 
 ---
 
-1.  Project Overview
+## 🚀 Live Interactive Application
 
-AgriRecover Gaza is an academic deep learning project that uses Sentinel-2 satellite data and Artificial Neural Networks (ANN) to monitor agricultural vegetation and predict future NDVI values in the Gaza Strip, Palestine.
+Explore the dashboard:
 
-The project analyzes historical agricultural vegetation indicators extracted from Sentinel-2 imagery using Google Earth Engine (GEE). The processed data is used to train an ANN model for next-month NDVI prediction.
+[**Open AgriRecover Gaza Dashboard**](https://agrirecover-gaza-dgyt2m7hxcwnje35rbaagj.streamlit.app/)
 
-An interactive Streamlit dashboard provides tools for data analysis, visualization, prediction, and model evaluation.
+---
 
-2.  Project Objectives
+## 🎯 Project Overview
 
-- Monitor agricultural vegetation using satellite data.
-- Analyze historical vegetation changes.
-- Explore spectral indicators related to vegetation and soil conditions.
-- Develop a deep learning model for next-month NDVI prediction.
-- Provide an interactive platform for exploring and evaluating results.
+The project analyzes historical agricultural vegetation indicators extracted from Sentinel-2 satellite imagery using Google Earth Engine (GEE).
 
-3.  Dataset Overview
+The processed monthly dataset is used to train an Artificial Neural Network that predicts the **next month's NDVI** for each agricultural sample, based on its latest available spectral observations.
 
-Property| Description
-Study Area| Gaza Strip, Palestine
-Satellite Source| Sentinel-2
-Processing Platform| Google Earth Engine
-Data Period| January 2018 – September 2026
-Total Records| 52,440
-Agricultural Samples| 500
-Spectral Indicators| 6
-Dataset Format| CSV
+The interactive Streamlit application provides data exploration, visualization, prediction, and model evaluation.
 
-Spectral Indicators
+## 🎯 Project Objectives
 
-Indicator| Description
-NDVI| Vegetation greenness and density
-EVI| Enhanced Vegetation Index
-NDMI| Vegetation moisture
-SAVI| Soil-Adjusted Vegetation Index
-BSI| Bare Soil Index
-NBR| Normalized Burn Ratio
+- Monitor agricultural vegetation using satellite-derived data.
+- Analyze monthly changes in vegetation and spectral indicators.
+- Explore differences between agricultural sample locations.
+- Predict the next month's NDVI using a trained ANN model.
+- Present dataset and model results through an interactive dashboard.
 
-4. Deep Learning Model
+## 🛰️ Dataset
 
-The project uses an Artificial Neural Network (ANN) to predict the next month's NDVI.
+The dataset was derived from **Sentinel-2 satellite imagery** and processed using **Google Earth Engine**.
 
-Model Architecture
+| Dataset Detail | Description |
+|---|---|
+| Study Area | Gaza Strip, Palestine |
+| Data Period | January 2018 – September 2026 |
+| Agricultural Samples | 500 sample IDs |
+| Temporal Resolution | Monthly observations |
+| Satellite Source | Sentinel-2 |
+| Processing Platform | Google Earth Engine |
+| Dataset File | `AgriRecover_Final_2018_2026(1).csv` |
 
-Layer| Configuration
-Input Layer| 6 Features
-Hidden Layer 1| 64 Neurons – ReLU
-Hidden Layer 2| 32 Neurons – ReLU
-Output Layer| 1 Predicted NDVI Value
+### Spectral Indicators
 
-Training Configuration
+The dataset includes six spectral indicators:
 
-- Optimizer: Adam
-- Loss Function: Mean Squared Error (MSE)
-- Epochs: 30
-- Batch Size: 32
-- Validation Split: 20%
-- Input Scaling: StandardScaler
+| Indicator | Description |
+|---|---|
+| **NDVI** | Normalized Difference Vegetation Index |
+| **EVI** | Enhanced Vegetation Index |
+| **NDMI** | Normalized Difference Moisture Index |
+| **SAVI** | Soil-Adjusted Vegetation Index |
+| **BSI** | Bare Soil Index |
+| **NBR** | Normalized Burn Ratio |
 
-5. Model Evaluation
+## 🧠 Deep Learning Model
 
-The ANN model was evaluated against a persistence baseline.
+An **Artificial Neural Network (ANN)** is used to estimate the next month's NDVI.
 
-Metric| ANN Model| Baseline
-MAE| 0.0859| 0.0874
-RMSE| 0.1283| 0.1452
-R²| 0.5850| 0.4683
+### Model Architecture
 
-Performance Improvement
+| Layer | Configuration |
+|---|---|
+| Input Layer | 6 spectral features |
+| Hidden Layer 1 | 64 neurons, ReLU |
+| Hidden Layer 2 | 32 neurons, ReLU |
+| Output Layer | 1 predicted NDVI value |
 
-- MAE Reduction: 1.72%
-- RMSE Reduction: 11.64%
-- R² Improvement: +0.1167
+### Training Configuration
 
-The ANN model achieved better results than the persistence baseline across all three evaluation metrics.
+| Setting | Value |
+|---|---|
+| Optimizer | Adam |
+| Loss Function | Mean Squared Error (MSE) |
+| Epochs | 30 |
+| Batch Size | 32 |
+| Validation Split | 20% |
+| Feature Scaling | StandardScaler |
 
-6. Interactive Dashboard
+The application uses the saved trained ANN model and its fitted StandardScaler for prediction.
 
-The Streamlit application includes six main sections:
+## 📊 Model Evaluation
 
-1. Overview: Project statistics, vegetation trends, and spectral indicators.
-2. Data Analysis: Interactive analysis of spectral indices and agricultural samples.
-3. AI Prediction: Single-sample and multiple-sample NDVI predictions.
-4. Model Performance: Evaluation metrics, model architecture, and baseline comparison.
-5. Data Quality: Missing values, duplicate records, and dataset coverage.
-6. About Project: Project objectives, methodology, technologies, and limitations.
+The reported evaluation results compare the ANN model with a persistence baseline.
 
-7. Technologies Used
+| Metric | ANN Model | Baseline |
+|---|---:|---:|
+| MAE | 0.0859 | 0.0874 |
+| RMSE | 0.1283 | 0.1452 |
+| R² | 0.5850 | 0.4683 |
+
+The ANN achieved lower MAE and RMSE values and a higher R² score than the persistence baseline.
+
+- **MAE:** Mean Absolute Error.
+- **RMSE:** Root Mean Squared Error.
+- **R²:** Coefficient of determination.
+
+These metrics describe regression performance; R² is not classification accuracy.
+
+## 🖥️ Dashboard Features
+
+The interactive application includes:
+
+- **Overview:** Dataset statistics and overall vegetation trends.
+- **Data Analysis:** Sample-level spectral trends, monthly index comparisons, and dataset preview.
+- **AI Prediction:** Single-sample and all-sample NDVI predictions, with CSV export.
+- **Model Performance:** Evaluation metrics, baseline comparison, model architecture, and training configuration.
+- **Data Quality:** Missing values, duplicate records, monthly coverage gaps, and EVI values requiring review.
+- **About Project:** Project objectives, workflow, data sources, and limitations.
+
+## ⚙️ Technologies Used
 
 - Python
+- Streamlit
 - TensorFlow / Keras
 - NumPy
 - Pandas
 - Scikit-learn
 - Joblib
 - Plotly
-- Streamlit
 - Google Earth Engine
 - Sentinel-2 Satellite Data
 
-8. Run the Application Locally
+## 🔄 Project Workflow
 
-Step 1: Clone the repository
+1. Obtain Sentinel-2 satellite imagery.
+2. Process imagery and calculate spectral indicators using Google Earth Engine.
+3. Prepare the monthly agricultural dataset.
+4. Prepare and scale model input features.
+5. Train and evaluate the ANN model.
+6. Save the trained model and fitted scaler.
+7. Integrate the dataset and saved model into the Streamlit dashboard.
 
-git clone https://github.com/asala-ai/AgriRecover-Gaza.git
+## ⚠️ Scope and Limitations
 
-Step 2: Navigate to the project directory
+- The model estimates a numeric NDVI value for the month following each sample's latest available observation.
+- Predictions are model estimates, not actual satellite observations.
+- The application does not classify land as damaged, healthy, recovered, or unrecovered.
+- Geographic sample mapping requires the original sample coordinates exported from Google Earth Engine.
+- Live satellite imagery and live Google Earth Engine authentication are not connected to the current application.
 
-cd AgriRecover-Gaza
+## 📚 Data Sources and References
 
-Step 3: Install dependencies
-
-pip install -r requirements.txt
-
-Step 4: Run the application
-
-streamlit run app.py
-
-The application will open in your default web browser.
-
-9. Scope and Limitations
-
-- The model predicts a numerical NDVI value for the month following each sample's latest available observation.
-- The model does not directly classify agricultural land as damaged, healthy, recovered, or unrecovered.
-- Geographic mapping requires the original sample coordinates exported from Google Earth Engine.
-- Live satellite imagery and live Google Earth Engine authentication are not connected to the current application version.
-- Predictions are model estimates and should not be interpreted as actual satellite observations.
-
-10. Data Sources and References
-
-- "European Space Agency – Sentinel-2" (https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2)
-- "Google Earth Engine – Sentinel-2 SR Harmonized" (https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_SR_HARMONIZED)
-- "TensorFlow / Keras Documentation" (https://www.tensorflow.org/guide/keras)
-- "Scikit-learn StandardScaler" (https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html)
+- [European Space Agency – Sentinel-2](https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2)
+- [Google Earth Engine – Sentinel-2 SR Harmonized](https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_SR_HARMONIZED)
+- [TensorFlow / Keras Documentation](https://www.tensorflow.org/guide/keras)
+- [Scikit-learn StandardScaler Documentation](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html)
 
 ---
 
-<p align="center">
-  **AgriRecover Gaza**<br>
-  Deep Learning • Remote Sensing • Agricultural Vegetation Monitoring<br>
-  Gaza Strip, Palestine
-</p>
+## 🔗 Project Links
+
+- **Live Application:** [AgriRecover Gaza Dashboard](https://agrirecover-gaza-dgyt2m7hxcwnje35rbaagj.streamlit.app/)
+- **GitHub Repository:** [asala-ai/AgriRecover-Gaza](https://github.com/asala-ai/AgriRecover-Gaza)
+
+---
+
+**AgriRecover Gaza**
+
+*An academic project for deep learning and agricultural vegetation monitoring in the Gaza Strip.*
