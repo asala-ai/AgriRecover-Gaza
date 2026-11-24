@@ -565,7 +565,7 @@ elif page == "AI Prediction":
             hide_index=True,
         )
         
-csv_bytes = predictions.to_csv(index=False).encode("utf-8")
+        csv_bytes = predictions.to_csv(index=False).encode("utf-8")
 
         st.download_button(
             "Download predictions as CSV",
